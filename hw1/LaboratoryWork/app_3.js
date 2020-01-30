@@ -8,7 +8,8 @@ const filenames = ['header.html', 'body.html', 'footer.html']
 http.createServer((request, response) => {// вызов метода создания http сервера
     for ( let i = 0; i < filenames.length; i++) {
         let filename = filenames[i];
-        fs.readFile(filename, 'utf-8', (err, data, i) => {
+
+        function callback (err, data) {
             if (err) {
                 console.log('Could not find or open file for reading\n');
                 response.statusCode = 404;
@@ -22,8 +23,10 @@ http.createServer((request, response) => {// вызов метода созда�
                 if(i + 1 == filenames.length) {
                     response.end();
                 }
+            }
         }
-    });
+
+        fs.readFile(filename, 'utf-8', callback);
     }
     console.log("Request accepted!");
 }).listen(8080, () => {
